@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# This is a bash script that uses the "nc" (netcat) tool to scan a target host for open ports 
+
+# Prompt user for target host and port range
+
+# if you get the error that inverse lookup failed, this is no issue, it means the reverse DNS lookup failed 
+# but it will still scan the ports 
+
+read -p "Enter target host: " host
+read -p "Enter port range (e.g. 1-65535): " ports
+
+# Use nc to scan target host for open ports
+nc -z -v $host $ports
