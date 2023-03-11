@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# This is a bash script that uses the nmap tool to perform a more thorough 
+# scan of a target network based on the IP address or range provided
+
+# Prompt user for target IP or range
+read -p "Enter target IP or range (e.g. 192.168.1.0/24): " target
+
+# Use nmap to scan target network and output to a file
+nmap -sC -sV -p-  $target -oN scan_results_.txt
+
+# Display scan results to user
+cat scan_results_.txt
