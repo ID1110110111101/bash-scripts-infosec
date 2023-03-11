@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# This is a bash script that uses the nmap tool to scan a network and determine if a host is up or not
+ 
+# Prompt user for target IP or range
+read -p "Enter target IP or range (e.g. 192.168.1.0/24): " target
+
+# Use nmap to scan target network and output to a file
+nmap -sP  $target -oN scan_results_UP.txt
+
+# Display scan results to user
+cat scan_results_UP.txt
