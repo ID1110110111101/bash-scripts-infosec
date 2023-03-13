@@ -1,0 +1,64 @@
+#!/bin/bash
+ 
+# This is a bash script that performs a series of reconnaissance actions on a target domain name
+ 
+# Prompt user for domain name
+read -p "Enter target domain name: " target
+
+#host
+if ! host $target > o.host.txt; then
+    echo "Failed to run host command"
+fi
+
+#nslookup
+if ! nslookup $target > o.nslookup.txt; then
+    echo "Failed to run nslookup command"
+fi
+
+# Perform traceroute
+if ! traceroute $target > o.traceroute.txt; then
+    echo "Failed to run traceroute command"
+fi
+
+#dnsrecon
+if ! dnsrecon -d $target > o.dnsrecon.txt; then
+    echo "Failed to run dnsrecon command"
+fi
+
+#wafw00f
+if ! wafw00f $target > o.waf.txt; then
+    echo "Failed to run wafw00f command"
+fi
+
+#whois
+if ! whois $target > o.whois.txt; then
+    echo "Failed to run whois command"
+fi
+
+#whatweb 
+if ! whatweb $target > o.whatweb.txt; then
+    echo "Failed to run whatweb command"
+fi
+
+#amass
+if ! amass enum -d $target > o.whatweb.txt; then
+    echo "Failed to run whatweb command"
+fi
+
+# Resolve domain name to IP address
+target_ip=$(dig +short $target)
+
+# Perform an nmap scan with service and version detection
+if ! nmap -sC -sV -p- $target > o.nmap.txt; then
+    echo "Failed to run nmap command"
+fi
+
+# Merge all output files
+cat *.txt > automated_recon_$target.txt
+
+# Echo the contents of the merged file
+echo "Recon run complete!"
+cat automated_recon_$target.txt
+
+#delete *.txt files
+rm o.*.txt
