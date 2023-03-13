@@ -1,31 +1,32 @@
 #!/bin/bash
-
+ 
 # This is a bash script that performs a series of reconnaissance actions on a target IP address 
-
+ 
 # Prompt user for IP address
 read -p "Enter target IP address: " target
 
+
 # Perform a whois lookup
-whois $target > automated_whois.txt
+whois $target > o.whois.txt
 
 # Perform a host lookup 
-host $target > automated_host.txt
-
-# Perform nslookup
-nslookup $target > automated_nslookup.txt
+host $target > o.host.txt
 
 # Perform traceroute
-traceroute $target > automated_traceroute.txt
-
+traceroute $target > o.traceroute.txt
 
 # Perform an nmap scan with service and version detection
-nmap -sC -sV -p-  $target >> automated_nmap.txt
+nmap -sC -sV -p- $target > o.nmap.txt
 
 # run gobuster
+gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://$target > o.gb.txt
 
-gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://$target >> automated_gobuster.txt
+# Merge all output files
+cat *.txt > automated_recon_$target.txt
 
+# Echo the contents of the merged file
+echo "Recon run complete!"
+cat automated_recon_$target.txt
 
-echo "Recon run complete!: "
-
-
+#delete *.txt files
+rm o.*.txt
